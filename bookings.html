@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>All Bookings — Grand Vista Hotel</title>
+    <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-inner">
+            <div class="brand">
+                <span class="brand-icon">🏨</span>
+                <span class="brand-name">Grand Vista Hotel</span>
+            </div>
+            <a href="/" class="nav-link">← New Booking</a>
+        </div>
+    </nav>
+    <main class="main-wrap">
+        <div class="form-card">
+            <div class="form-card-header">
+                <h2>All Reservations</h2>
+                <p>{{ bookings|length }} booking(s) found</p>
+            </div>
+            <div class="table-scroll" style="padding:1rem">
+                {% if bookings %}
+                <table class="bookings-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Room</th>
+                            <th>Check-In</th>
+                            <th>Check-Out</th>
+                            <th>Guests</th>
+                            <th>Booked At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in bookings %}
+                        <tr>
+                            <td><span class="badge">{{ b.id }}</span></td>
+                            <td>{{ b.full_name }}</td>
+                            <td>{{ b.email }}</td>
+                            <td>{{ b.room_type }}</td>
+                            <td>{{ b.check_in }}</td>
+                            <td>{{ b.check_out }}</td>
+                            <td>{{ b.guests }}</td>
+                            <td class="muted">{{ b.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">No bookings yet. <a href="/">Make one →</a></div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <p>© 2025 Grand Vista Hotel · All rights reserved</p>
+    </footer>
+</body>
+
+</html>

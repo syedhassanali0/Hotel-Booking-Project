@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grand Vista Hotel — Book Your Stay</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- ── NAV ── -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <div class="brand">
+                <span class="brand-icon">🏨</span>
+                <span class="brand-name">Grand Vista Hotel</span>
+            </div>
+            <a href="/bookings" class="nav-link">View All Bookings →</a>
+        </div>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-eyebrow">Five-Star Experience</p>
+            <h1 class="hero-title">Reserve Your Perfect Room</h1>
+            <p class="hero-sub">Luxurious stays from mountain suites to ocean-view penthouses</p>
+        </div>
+    </header>
+
+    <!-- ── MAIN ── -->
+    <main class="main-wrap">
+
+        <!-- Success Banner -->
+        {% if success %}
+        <div class="alert-success" id="successBanner">
+            <div class="alert-icon">✅</div>
+            <div class="alert-body">
+                <strong>Booking Confirmed!</strong> Thank you, <em>{{ full_name }}</em>. Your reservation #<strong>{{ booking_id }}</strong> has been saved.
+            </div>
+            <button class="alert-close" onclick="this.parentElement.remove()">✕</button>
+        </div>
+        {% endif %}
+
+        <div class="form-card">
+            <div class="form-card-header">
+                <h2>Booking Details</h2>
+                <p>Fill in your information below and we'll confirm your reservation instantly.</p>
+            </div>
+
+            <form action="/book" method="POST" class="booking-form" novalidate>
+
+                <!-- Row 1 -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="full_name">Full Name <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <span class="input-icon">👤</span>
+                            <input type="text" id="full_name" name="full_name" placeholder="Jane Smith" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <span class="input-icon">✉️</span>
+                            <input type="email" id="email" name="email" placeholder="jane@example.com" required />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <span class="input-icon">📞</span>
+                            <input type="tel" id="phone" name="phone" placeholder="+92 300 0000000" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="room_type">Room Type <span class="req">*</span></label>
+                        <div class="input-wrap select-wrap">
+                            <span class="input-icon">🛏️</span>
+                            <select id="room_type" name="room_type" required>
+                <option value="" disabled selected>Select a room…</option>
+                <option value="Standard Single">Standard Single</option>
+                <option value="Standard Double">Standard Double</option>
+                <option value="Deluxe King">Deluxe King</option>
+                <option value="Junior Suite">Junior Suite</option>
+                <option value="Executive Suite">Executive Suite</option>
+                <option value="Presidential Suite">Presidential Suite</option>
+                <option value="Ocean View Penthouse">Ocean View Penthouse</option>
+              </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="form-row three-col">
+                    <div class="form-group">
+                        <label for="check_in">Check-In Date <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <span class="input-icon">📅</span>
+                            <input type="date" id="check_in" name="check_in" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="check_out">Check-Out Date <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <span class="input-icon">📅</span>
+                            <input type="date" id="check_out" name="check_out" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Number of Guests <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <span class="input-icon">👥</span>
+                            <input type="number" id="guests" name="guests" min="1" max="10" placeholder="2" required />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Requests -->
+                <div class="form-group full-width">
+                    <label for="special_requests">Special Requests <span class="optional">(optional)</span></label>
+                    <div class="input-wrap">
+                        <textarea id="special_requests" name="special_requests" rows="4" placeholder="e.g. Late check-in, extra pillows, honeymoon package, wheelchair access…"></textarea>
+                    </div>
+                </div>
+
+                <!-- Price Estimate -->
+                <div class="price-estimate" id="priceEstimate" style="display:none">
+                    <div class="price-label">Estimated Stay</div>
+                    <div class="price-nights" id="nightsLabel">— nights</div>
+                    <div class="price-amount" id="priceLabel">—</div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+          <span>Confirm Booking</span>
+          <span class="btn-arrow">→</span>
+        </button>
+
+            </form>
+        </div>
+
+        <!-- Amenities Strip -->
+        <div class="amenities">
+            <div class="amenity"><span>🍳</span> Breakfast Included</div>
+            <div class="amenity"><span>🏊</span> Rooftop Pool</div>
+            <div class="amenity"><span>🏋️</span> Fitness Centre</div>
+            <div class="amenity"><span>🅿️</span> Free Parking</div>
+            <div class="amenity"><span>📶</span> High-Speed WiFi</div>
+            <div class="amenity"><span>🍽️</span> Fine Dining</div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 Grand Vista Hotel &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; Built with FastAPI &amp; PostgreSQL</p>
+    </footer>
+
+    <script>
+        // Set min date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('check_in').min = today;
+        document.getElementById('check_out').min = today;
+
+        // Auto-advance check-out when check-in changes
+        document.getElementById('check_in').addEventListener('change', function() {
+            const ci = new Date(this.value);
+            ci.setDate(ci.getDate() + 1);
+            document.getElementById('check_out').min = ci.toISOString().split('T')[0];
+            updatePrice();
+        });
+        document.getElementById('check_out').addEventListener('change', updatePrice);
+        document.getElementById('room_type').addEventListener('change', updatePrice);
+
+        const prices = {
+            'Standard Single': 80,
+            'Standard Double': 110,
+            'Deluxe King': 160,
+            'Junior Suite': 220,
+            'Executive Suite': 320,
+            'Presidential Suite': 500,
+            'Ocean View Penthouse': 750,
+        };
+
+        function updatePrice() {
+            const ci = document.getElementById('check_in').value;
+            const co = document.getElementById('check_out').value;
+            const rt = document.getElementById('room_type').value;
+            const box = document.getElementById('priceEstimate');
+            if (!ci || !co || !rt) {
+                box.style.display = 'none';
+                return;
+            }
+            const nights = Math.round((new Date(co) - new Date(ci)) / 86400000);
+            if (nights <= 0) {
+                box.style.display = 'none';
+                return;
+            }
+            const total = nights * (prices[rt] || 0);
+            document.getElementById('nightsLabel').textContent = `${nights} night${nights > 1 ? 's' : ''}`;
+            document.getElementById('priceLabel').textContent = `$${total.toLocaleString()}`;
+            box.style.display = 'flex';
+        }
+    </script>
+</body>
+
+</html>
